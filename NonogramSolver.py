@@ -22,17 +22,13 @@ class Nonogram:
                 # Handles cases of 0s in the current cell
                 if self.grid[row_index][j] == 0 and current_block_size != 0: # Case 1: There is a 0 interrupting what should be a continuous block. Thus, the row is invalid and the method returns False.
                     return False
-                
                 if self.grid[row_index][j] == 0 and current_block_size == 0: # Case 2: There is a 0 but there is not a continuous block so it iterates to next index
                     continue
-
                 # Handles cases of 1s in the current cell
                 if self.grid[row_index][j] == 1 and current_block_size > correct_row_values[i]: # Case 1: There is a 1, making the block too long. Thus, the row is invalid and the method returns False.
                     return False
-                
                 if self.grid[row_index][j] == 1 and current_block_size < correct_row_values[i]: # Case 2: There is a 1 and the block isn't large enough yet, adds to the counter for block size.
                     current_block_size += 1
-                    
                 # Checks if the current block is satisfied. Resets the block size counter and sets the starting index for the loop to the next index in the array.
                 if current_block_size == correct_row_values[i]:
                     current_block_size = 0
@@ -43,7 +39,6 @@ class Nonogram:
                         return False
                     else: # If we hit this else statement, then we have another block to check and we break out of the inner loop to check the next block.
                         break
-        
         if 1 in self.grid[row_index][starting_index:]:
             return False # If there is another 1 found passed the loop, then there is an extra block and the method returns False.
         else:
