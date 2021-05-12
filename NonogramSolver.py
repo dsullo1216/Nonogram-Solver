@@ -88,8 +88,10 @@ class Nonogram:
                 return False
         return True
             
-
-
+    def clean_row(self, row_index):
+        for i in range(len(self.grid)):
+            self.grid[row_index][i] = 0
+        return 0
 
     """
     nonogram_solver(): The main function that will do the solving of the puzzle. I am going to take a recursive backtracking approach in order to fill in the each
