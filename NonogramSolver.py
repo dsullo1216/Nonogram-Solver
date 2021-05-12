@@ -5,6 +5,12 @@ class Nonogram:
         self.grid = [[0 for i in range(grid_size)] for j in range(grid_size)] # Initializes the 2D Array which will contain the grid itself
         self.valid_rows = valid_rows
         self.valid_cols = valid_cols
+        self.potential_rows = {}
+        self.potential_cols = {}
+        for i in range(grid_size):
+            self.potential_rows[i] = []
+            self.potential_cols[i] = []
+
 
     def __repr__(self):
         s = "\n"
@@ -93,6 +99,19 @@ class Nonogram:
             self.grid[row_index][i] = 0
         return 0
 
+    def find_valid_rows(self, row_index):
+        correct_row_vals = self.valid_rows[row_index]
+        potential_row = []
+        min_num_cells = sum(correct_row_vals) + len(correct_row_vals) - 1
+        if min_num_cells == self.grid_size: # There is only one possible row for this row, creates the row and adds it to the dictionary of possible rows.
+            for num_cells in correct_row_vals:
+                potential_row += [1 for k in range(num_cells)]
+                potential_row += [0]
+            potential_row = potential_row[:-1]
+            self.potential_rows[row_index] += potential_row
+            return potential_row
+        else:
+            return [0 for k in range(self.grid_size)]
     """
     nonogram_solver(): The main function that will do the solving of the puzzle. I am going to take a recursive backtracking approach in order to fill in the each
                        cell of the grid. If it encounters a conflict it will go back and try a different value for the cell and will continue until it reaches the last index.
@@ -126,4 +145,4 @@ NonogramTest.grid[4][2] = 1
 NonogramTest.grid[4][3] = 1
 NonogramTest.grid[4][4] = 1
 print(NonogramTest)
-print(NonogramTest.is_valid_grid())
+print(NonogramTest.find_valid_rows())
