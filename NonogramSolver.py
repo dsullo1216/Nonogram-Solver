@@ -11,7 +11,6 @@ class Nonogram:
             self.potential_rows[i] = []
             self.potential_cols[i] = []
 
-
     def __repr__(self):
         s = "\n"
         for r in range(len(self.grid)):
@@ -112,6 +111,7 @@ class Nonogram:
             return potential_row
         else:
             return [0 for k in range(self.grid_size)]
+    
     """
     nonogram_solver(): The main function that will do the solving of the puzzle. I am going to take a recursive backtracking approach in order to fill in the each
                        cell of the grid. If it encounters a conflict it will go back and try a different value for the cell and will continue until it reaches the last index.
@@ -145,4 +145,4 @@ NonogramTest.grid[4][2] = 1
 NonogramTest.grid[4][3] = 1
 NonogramTest.grid[4][4] = 1
 print(NonogramTest)
-print(NonogramTest.find_valid_rows())
+print(NonogramTest.find_valid_rows(0))
