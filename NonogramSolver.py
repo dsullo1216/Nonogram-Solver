@@ -102,15 +102,17 @@ class Nonogram:
         correct_row_vals = self.valid_rows[row_index]
         potential_row = []
         min_num_cells = sum(correct_row_vals) + len(correct_row_vals) - 1
-        if min_num_cells == self.grid_size: # There is only one possible row for this row, creates the row and adds it to the dictionary of possible rows.
-            for num_cells in correct_row_vals:
+        for num_cells in correct_row_vals:
                 potential_row += [1 for k in range(num_cells)]
                 potential_row += [0]
-            potential_row = potential_row[:-1]
+        potential_row = potential_row[:-1]
+        if min_num_cells == self.grid_size: # There is only one possible row for this row, creates the row and adds it to the dictionary of possible rows.
             self.potential_rows[row_index] += potential_row
             return potential_row
-        else:
-            return [0 for k in range(self.grid_size)]
+        else: # There are multiple possible rows so we will iterate through all possibilities and add them to the dictionary
+
+
+            return potential_row
     
     """
     nonogram_solver(): The main function that will do the solving of the puzzle. I am going to take a recursive backtracking approach in order to fill in the each
@@ -121,20 +123,9 @@ class Nonogram:
 
       return self.grid
 
-def finish_row(row, row_length, position):
-    if len(row) == row_length:
-        return row
-    num_zeros = row_length - len(row)
-    if position == "front":
-        return [0 for k in range(num_zeros)] + row
-    if position == "back":
-        return row + [0 for k in range(num_zeros)]
-
-
-
 
 def main():
-    test_rows = [[3,1], [1,1,1], [5], [2], [4]] # Array containing the correct number of "filled-in" squares for the rows of the grid
+    """ test_rows = [[3,1], [1,1,1], [5], [2], [4]] # Array containing the correct number of "filled-in" squares for the rows of the grid
     test_cols = [[3], [1,3], [5], [1,1], [3,1]] # Array containing the correct number of "filled-in" squares for the columns of the grid
     NonogramTest = Nonogram(5, test_rows, test_cols)
     NonogramTest.grid[0][0] = 1
@@ -154,6 +145,10 @@ def main():
     NonogramTest.grid[4][1] = 1
     NonogramTest.grid[4][2] = 1
     NonogramTest.grid[4][3] = 1
-    NonogramTest.grid[4][4] = 1
+    NonogramTest.grid[4][4] = 1 """
+    test_rows2 = [[3,2,1] for k in range(10)]
+    NonogramTest = Nonogram(10, test_rows2, test_rows2)
     print(NonogramTest)
     print(NonogramTest.find_valid_rows(0))
+
+main()
