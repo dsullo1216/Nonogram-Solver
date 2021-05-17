@@ -6,10 +6,8 @@ class Nonogram:
         self.valid_rows = valid_rows
         self.valid_cols = valid_cols
         self.potential_rows = {}
-        self.potential_cols = {}
         for i in range(grid_size):
             self.potential_rows[i] = []
-            self.potential_cols[i] = []
 
     def __repr__(self):
         s = "\n"
@@ -109,9 +107,10 @@ class Nonogram:
         if min_num_cells == self.grid_size: # There is only one possible row for this row, creates the row and adds it to the dictionary of possible rows.
             self.potential_rows[row_index] += potential_row
             return potential_row
-        else: # There are multiple possible rows so we will iterate through all possibilities and add them to the dictionary
-            num_extra_zeros = self.grid_size - min_num_cells
-            gap_indices = [0] + [i for i, x in enumerate(potential_row) if x == 0] + [len(potential_row)-1]
+        else: # There are multiple possible rows; iterate through all possibilities and add them to the dictionary
+            num_extra_zeros = self.grid_size - min_num_cells # Number of extra zeros needed to fill the remainder of the row
+            gap_indices = [0] + [i for i, x in enumerate(potential_row) if x == 0] + [len(potential_row)-1] # Creates a list of indices where an extra zero can be placed
+            # Using a triple-nested for loop, tries all possible amount of zeros in each gap by having effectively two pointers to try all placements of zeros 
             for num_zeros in range(1, num_extra_zeros+1):
                 for gap1 in gap_indices[:-1]:
                     for gap2 in gap_indices[gap_indices.index(gap1)+1:]:
@@ -119,10 +118,11 @@ class Nonogram:
                             current_potential_row = potential_row[:gap1] + [0 for k in range(num_zeros)] + potential_row[gap1:gap2] + [0 for k in range(num_extra_zeros - num_zeros)] + potential_row[gap2:]
                         else:
                             current_potential_row = potential_row[:gap1] + [0 for k in range(num_zeros)] + potential_row[gap1:] + [0 for k in range(num_extra_zeros -  num_zeros)]
-                        if current_potential_row not in self.potential_rows[row_index]:
+                        
+                        if current_potential_row not in self.potential_rows[row_index]: # Since there is potential for duplicate rows to show up, filters out rows already added to the dictionary
                             self.potential_rows[row_index].append(current_potential_row)
             current_potential_row = potential_row + [0 for k in range(num_extra_zeros)]
-            if current_potential_row not in self.potential_rows[row_index]:
+            if current_potential_row not in self.potential_rows[row_index]: # Handles edge case of adding all extra zeros to the end of the row
                 self.potential_rows[row_index].append(current_potential_row)
             return self.potential_rows[row_index]
     
