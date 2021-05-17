@@ -137,7 +137,7 @@ class Nonogram:
 
 
 def main():
-    """ test_rows = [[3,1], [1,1,1], [5], [2], [4]] # Array containing the correct number of "filled-in" squares for the rows of the grid
+    test_rows = [[3,1], [1,1,1], [5], [2], [4]] # Array containing the correct number of "filled-in" squares for the rows of the grid
     test_cols = [[3], [1,3], [5], [1,1], [3,1]] # Array containing the correct number of "filled-in" squares for the columns of the grid
     NonogramTest = Nonogram(5, test_rows, test_cols)
     NonogramTest.grid[0][0] = 1
@@ -157,11 +157,9 @@ def main():
     NonogramTest.grid[4][1] = 1
     NonogramTest.grid[4][2] = 1
     NonogramTest.grid[4][3] = 1
-    NonogramTest.grid[4][4] = 1 """
-    test_rows2 = [[3,2,1] for k in range(10)]
-    NonogramTest = Nonogram(10, test_rows2, test_rows2)
-    #print(NonogramTest)
-    NonogramTest.find_valid_rows(0)
+    NonogramTest.grid[4][4] = 1 
+    print(NonogramTest)
+    NonogramTest.find_valid_rows(3)
     for entry in NonogramTest.potential_rows[0]:
         print(entry)
 
