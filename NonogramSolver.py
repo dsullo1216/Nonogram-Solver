@@ -163,4 +163,5 @@ def main():
     for entry in NonogramTest.potential_rows[0]:
         print(entry)
 
+
 main()
