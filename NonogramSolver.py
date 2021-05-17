@@ -120,29 +120,40 @@ class Nonogram:
     def nonogram_solver(self, n):
 
       return self.grid
-      
+
+def finish_row(row, row_length, position):
+    if len(row) == row_length:
+        return row
+    num_zeros = row_length - len(row)
+    if position == "front":
+        return [0 for k in range(num_zeros)] + row
+    if position == "back":
+        return row + [0 for k in range(num_zeros)]
 
 
-test_rows = [[3,1], [1,1,1], [5], [2], [4]] # Array containing the correct number of "filled-in" squares for the rows of the grid
-test_cols = [[3], [1,3], [5], [1,1], [3,1]] # Array containing the correct number of "filled-in" squares for the columns of the grid
-NonogramTest = Nonogram(5, test_rows, test_cols)
-NonogramTest.grid[0][0] = 1
-NonogramTest.grid[0][1] = 1
-NonogramTest.grid[0][2] = 1
-NonogramTest.grid[0][4] = 1
-NonogramTest.grid[1][0] = 1
-NonogramTest.grid[1][2] = 1
-NonogramTest.grid[1][4] = 1
-NonogramTest.grid[2][0] = 1
-NonogramTest.grid[2][1] = 1
-NonogramTest.grid[2][2] = 1
-NonogramTest.grid[2][3] = 1
-NonogramTest.grid[2][4] = 1
-NonogramTest.grid[3][1] = 1
-NonogramTest.grid[3][2] = 1
-NonogramTest.grid[4][1] = 1
-NonogramTest.grid[4][2] = 1
-NonogramTest.grid[4][3] = 1
-NonogramTest.grid[4][4] = 1
-print(NonogramTest)
-print(NonogramTest.find_valid_rows(0))
+
+
+def main():
+    test_rows = [[3,1], [1,1,1], [5], [2], [4]] # Array containing the correct number of "filled-in" squares for the rows of the grid
+    test_cols = [[3], [1,3], [5], [1,1], [3,1]] # Array containing the correct number of "filled-in" squares for the columns of the grid
+    NonogramTest = Nonogram(5, test_rows, test_cols)
+    NonogramTest.grid[0][0] = 1
+    NonogramTest.grid[0][1] = 1
+    NonogramTest.grid[0][2] = 1
+    NonogramTest.grid[0][4] = 1
+    NonogramTest.grid[1][0] = 1
+    NonogramTest.grid[1][2] = 1
+    NonogramTest.grid[1][4] = 1
+    NonogramTest.grid[2][0] = 1
+    NonogramTest.grid[2][1] = 1
+    NonogramTest.grid[2][2] = 1
+    NonogramTest.grid[2][3] = 1
+    NonogramTest.grid[2][4] = 1
+    NonogramTest.grid[3][1] = 1
+    NonogramTest.grid[3][2] = 1
+    NonogramTest.grid[4][1] = 1
+    NonogramTest.grid[4][2] = 1
+    NonogramTest.grid[4][3] = 1
+    NonogramTest.grid[4][4] = 1
+    print(NonogramTest)
+    print(NonogramTest.find_valid_rows(0))
