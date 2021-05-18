@@ -165,7 +165,6 @@ class Nonogram:
             return True
         
 
-
 def main():
     test_rows = [[3,5],[1,5],[1,6],[5],[2,4,1],[2,1],[3],[5,1],[1],[2,1,1]] # Array containing the correct number of "filled-in" squares for the rows of the grid
     test_cols = [[1,4,1],[3,4,1],[1,3],[1,1],[3,1],[5],[5,1],[4,1,1],[5,1],[3]] # Array containing the correct number of "filled-in" squares for the columns of the grid
