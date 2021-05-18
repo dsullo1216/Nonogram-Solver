@@ -56,47 +56,6 @@ class Nonogram:
             return False
         return True
 
-    def is_valid_col(self, col_index):       
-        correct_col_values = self.valid_cols[col_index]
-        current_block_size = 0
-        starting_index = 0      
-        for i in range(len(correct_col_values)):
-            for j in range(starting_index, len(self.grid[0])):              
-                # Handles cases of 0s in the current cell
-                if self.grid[j][col_index] == 0 and current_block_size != 0: # Case 1: There is a 0 interrupting what should be a continuous block. Thus, the column is invalid and the method returns False.
-                    return False
-                if self.grid[j][col_index] == 0 and current_block_size == 0: # Case 2: There is a 0 but there is not a continuous block so it iterates to next index
-                    continue
-                
-                # Handles cases of 1s in the current cell
-                if self.grid[j][col_index] == 1 and current_block_size > correct_col_values[i]: # Case 1: There is a 1, making the block too long. Thus, the column is invalid and the method returns False.
-                    return False
-                if self.grid[j][col_index] == 1 and current_block_size < correct_col_values[i]: # Case 2: There is a 1 and the block isn't large enough yet, adds to the counter for block size.
-                    current_block_size += 1
-                
-                # Checks if the current block is satisfied. Resets the block size counter and sets the starting index for the loop to the next index in the array.
-                if current_block_size == correct_col_values[i]:
-                    current_block_size = 0
-                    starting_index = j+1
-                    if starting_index >= len(self.grid[0]) and i == len(correct_col_values) - 1: # Checks if starting index is out of bounds and if we are checking the last block. If both are true then the column is valid and the method return True.
-                        return True
-                    elif self.grid[starting_index][col_index] == 1: # Since the if statement above failed, we check if the next index is a 1, if it is then the block is too long and the method return False.
-                        return False
-                    else: # If we hit this else statement, then we have another block to check and we break out of the inner loop to check the next block.
-                        break
-        
-        for j in range(starting_index, len(self.grid[0])): # Loops through the remaining indices checking if there is an extra block. Returns False if there is
-            if self.grid[j][col_index] == 1:
-                return False 
-        else:
-            return True # If we finished iterating through all of the column values and indices in the column then the column is valid and the method returns True.
-
-    def is_valid_grid(self):
-        for i in range(len(self.grid)):
-            if self.is_valid_col(i) == False:
-                return False
-        return True
-
     def place_row(self, row_index, potential_row_index):
         row_to_try = self.potential_rows[row_index][potential_row_index]
         for i in range(len(self.grid[0])):
@@ -169,14 +128,15 @@ class Nonogram:
             print("This Nonogram has no solution")
             return False
         else:
+            print("The solution for this Nonogram is: \n", self)
             return True
         
 
 def main():
     test_rows = [[3,5],[1,5],[1,6],[5],[2,4,1],[2,1],[3],[5,1],[1],[2,1,1]] # Array containing the correct number of "filled-in" squares for the rows of the grid
     test_cols = [[1,4,1],[3,4,1],[1,3],[1,1],[3,1],[5],[5,1],[4,1,1],[5,1],[3]] # Array containing the correct number of "filled-in" squares for the columns of the grid
-    #test_rows = [[1,1],[2,1],[3],[2],[1]]
-    #test_cols = [[1,1],[2],[3],[1],[2,1]]
+    #test_rows = [[3,2],[1,1,1,1],[1,2,1,2],[1,2,1,1,3],[1,1,2,1],[2,3,1,2],[9,3],[2,3],[1,2],[1,1,1,1],[1,4,1],[1,2,2,2],[1,1,1,1,1,1,2],[2,1,1,2,1,1],[3,4,3,1]]
+    #test_cols = [[4,3],[1,6,2],[1,2,2,1,1],[1,2,2,1,2],[3,2,3],[2,1,3],[1,1,1],[2,1,4,1],[1,1,1,1,2],[1,4,2],[1,1,2,1],[2,7,1],[2,1,1,2],[1,2,1],[3,3]]
     NonogramTest = Nonogram(10, test_rows, test_cols)
     NonogramTest.nonogram_solver()
 
