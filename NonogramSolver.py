@@ -108,8 +108,8 @@ class Nonogram:
                 potential_row += [0]
         potential_row = potential_row[:-1]
         if min_num_cells == self.grid_size: # There is only one possible row for this row, creates the row and adds it to the dictionary of possible rows.
-            self.potential_rows[row_index] += potential_row
-            return potential_row
+            self.potential_rows[row_index].append(potential_row)
+            return self.potential_rows[row_index]
         else: # There are multiple possible rows; iterate through all possibilities and add them to the dictionary
             num_extra_zeros = self.grid_size - min_num_cells # Number of extra zeros needed to fill the remainder of the row
             gap_indices = [0] + [i for i, x in enumerate(potential_row) if x == 0] + [len(potential_row)-1] # Creates a list of indices where an extra zero can be placed
@@ -130,10 +130,24 @@ class Nonogram:
             return self.potential_rows[row_index]
     
     def nonogram_solver_util(self, n):
-        if n > self.grid_size:
+        if n >= self.grid_size:
             return True
-        for row in self.potential_rows[n]:
-            return
+        for i in range(len(self.potential_rows[n])):
+            self.place_row(n, i)
+            
+            if self.nonogram_solver_util(n+1) == True:
+                return True
+            
+            self.clean_row(n)
+
+        return False
+
+    def nonogram_solver(self):
+        if self.nonogram_solver_util(0) == False:
+            print("This Nonogram has no solution")
+            return False
+        else:
+            return True
         
 
 
@@ -141,7 +155,6 @@ def main():
     test_rows = [[3,1], [1,1,1], [5], [2], [4]] # Array containing the correct number of "filled-in" squares for the rows of the grid
     test_cols = [[3], [1,3], [5], [1,1], [3,1]] # Array containing the correct number of "filled-in" squares for the columns of the grid
     NonogramTest = Nonogram(5, test_rows, test_cols)
-    print(NonogramTest.potential_rows)
-    
-
+    NonogramTest.nonogram_solver()
+    print(NonogramTest)
 main()
