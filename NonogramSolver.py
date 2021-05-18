@@ -20,6 +20,7 @@ class Nonogram:
         correct_col_values = self.valid_cols[col_index]
         current_block_size = 0
         starting_index = 0
+        next_starting_index = 0 
         for i in range(len(correct_col_values)):
             for j in range(starting_index, len(self.grid[0])):
                 # Handles cases of 0s in the current cell
@@ -33,6 +34,7 @@ class Nonogram:
                     return False
                 if self.grid[j][col_index] == 1 and current_block_size < correct_col_values[i]: # Case 2: There is a 1 and the block isn't large enough yet, adds to the counter for block size.
                     current_block_size += 1
+                    next_starting_index = j + 1
                 
                 # Checks if the current block is satisfied. Resets the block size counter and sets the starting index for the loop to the next index in the array.
                 if current_block_size == correct_col_values[i]:
@@ -44,12 +46,13 @@ class Nonogram:
                         return False
                     else: # If we hit this else statement, then we have another block to check and we break out of the inner loop to check the next block.
                         break
+            starting_index = next_starting_index
         return True
 
     def is_valid_col(self, col_index):       
         correct_col_values = self.valid_cols[col_index]
         current_block_size = 0
-        starting_index = 0       
+        starting_index = 0      
         for i in range(len(correct_col_values)):
             for j in range(starting_index, len(self.grid[0])):              
                 # Handles cases of 0s in the current cell
@@ -167,14 +170,6 @@ def main():
     test_rows = [[3,1], [1,1,1], [5], [2], [4]] # Array containing the correct number of "filled-in" squares for the rows of the grid
     test_cols = [[3], [1,3], [5], [1,1], [3,1]] # Array containing the correct number of "filled-in" squares for the columns of the grid
     NonogramTest = Nonogram(5, test_rows, test_cols)
-    NonogramTest.grid[0][0] = 1
-    NonogramTest.grid[0][1] = 1
-    NonogramTest.grid[0][2] = 1
-    NonogramTest.grid[0][4] = 1
-    NonogramTest.grid[1][0] = 1
-    NonogramTest.grid[1][2] = 1
-    NonogramTest.grid[1][4] = 1
-    print(NonogramTest)
-    for c in range(len(NonogramTest.grid[0])):
-        print(NonogramTest.is_currently_valid_col(c,1))
+    NonogramTest.nonogram_solver()
+
 main()
