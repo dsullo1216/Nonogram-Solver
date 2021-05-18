@@ -49,10 +49,9 @@ class Nonogram:
                     else: # If we hit this else statement, then we have another block to check and we break out of the inner loop to check the next block.
                         break
             starting_index = next_starting_index
-            if len(correct_col_values) == 1:
-                for j in range(starting_index, len(self.grid[0])):
-                    if self.grid[j][col_index] == 1: # There is only supposed to be one block and there is an extra so method returns False
-                        return False
+        for j in range(starting_index, len(self.grid[0])): # Loops through the remaining indices checking if there is an extra block. Returns False if there is
+            if self.grid[j][col_index] == 1:
+                return False 
         if next_starting_index == 0  and current_row_index == self.grid_size - 1: # We are in the last row and the column is all zeros so method returns False
             return False
         return True
