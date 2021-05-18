@@ -49,7 +49,10 @@ class Nonogram:
                     else: # If we hit this else statement, then we have another block to check and we break out of the inner loop to check the next block.
                         break
             starting_index = next_starting_index
-            print("Current Col is:", col_index, "and the next_starting_index is", next_starting_index)
+            if len(correct_col_values) == 1:
+                for j in range(starting_index, len(self.grid[0])):
+                    if self.grid[j][col_index] == 1: # There is only supposed to be one block and there is an extra so method returns False
+                        return False
         if next_starting_index == 0  and current_row_index == self.grid_size - 1: # We are in the last row and the column is all zeros so method returns False
             return False
         return True
@@ -171,11 +174,11 @@ class Nonogram:
         
 
 def main():
-    #test_rows = [[3,5],[1,5],[1,6],[5],[2,4,1],[2,1],[3],[5,1],[1],[2,1,1]] # Array containing the correct number of "filled-in" squares for the rows of the grid
-    #test_cols = [[1,4,1],[3,4,1],[1,3],[1,1],[3,1],[5],[5,1],[4,1,1],[5,1],[3]] # Array containing the correct number of "filled-in" squares for the columns of the grid
-    test_rows = [[1,1],[2,1],[3],[2],[1]]
-    test_cols = [[1,1],[2],[3],[1],[2,1]]
-    NonogramTest = Nonogram(5, test_rows, test_cols)
+    test_rows = [[3,5],[1,5],[1,6],[5],[2,4,1],[2,1],[3],[5,1],[1],[2,1,1]] # Array containing the correct number of "filled-in" squares for the rows of the grid
+    test_cols = [[1,4,1],[3,4,1],[1,3],[1,1],[3,1],[5],[5,1],[4,1,1],[5,1],[3]] # Array containing the correct number of "filled-in" squares for the columns of the grid
+    #test_rows = [[1,1],[2,1],[3],[2],[1]]
+    #test_cols = [[1,1],[2],[3],[1],[2,1]]
+    NonogramTest = Nonogram(10, test_rows, test_cols)
     NonogramTest.nonogram_solver()
 
 main()
