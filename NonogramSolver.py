@@ -8,7 +8,6 @@ class Nonogram:
         self.potential_rows = {}
         for i in range(grid_size):
             self.potential_rows[i] = []
-            self.find_valid_rows(i)
 
     def __repr__(self):
         s = "\n"
@@ -130,11 +129,22 @@ class Nonogram:
             return self.potential_rows[row_index]
     
     def nonogram_solver_util(self, n):
+        print("This is call number:", n)
+        print(self)
         if n >= self.grid_size:
             return True
         for i in range(len(self.potential_rows[n])):
             self.place_row(n, i)
+            row_works = True
+            for c in range(len(self.grid[0])):
+                if self.is_currently_valid_col(c, n) == False:
+                    self.clean_row(n)
+                    row_works = False
+                    break
             
+            if row_works == False:
+                continue
+
             if self.nonogram_solver_util(n+1) == True:
                 return True
             
@@ -143,6 +153,8 @@ class Nonogram:
         return False
 
     def nonogram_solver(self):
+        for i in range(self.grid_size):
+            self.find_valid_rows(i)
         if self.nonogram_solver_util(0) == False:
             print("This Nonogram has no solution")
             return False
@@ -155,6 +167,14 @@ def main():
     test_rows = [[3,1], [1,1,1], [5], [2], [4]] # Array containing the correct number of "filled-in" squares for the rows of the grid
     test_cols = [[3], [1,3], [5], [1,1], [3,1]] # Array containing the correct number of "filled-in" squares for the columns of the grid
     NonogramTest = Nonogram(5, test_rows, test_cols)
-    NonogramTest.nonogram_solver()
+    NonogramTest.grid[0][0] = 1
+    NonogramTest.grid[0][1] = 1
+    NonogramTest.grid[0][2] = 1
+    NonogramTest.grid[0][4] = 1
+    NonogramTest.grid[1][0] = 1
+    NonogramTest.grid[1][2] = 1
+    NonogramTest.grid[1][4] = 1
     print(NonogramTest)
+    for c in range(len(NonogramTest.grid[0])):
+        print(NonogramTest.is_currently_valid_col(c,1))
 main()
