@@ -42,6 +42,8 @@ class Nonogram:
                     starting_index = j+1
                     if starting_index >= len(self.grid[0]) and i == len(correct_col_values) - 1: # Checks if starting index is out of bounds and if we are checking the last block. If both are true then the column is valid and the method return True.
                         return True
+                    elif starting_index >= len(self.grid[0]) and i < len(correct_col_values) - 1: # Checks if starting index is out of bounds and if there is a block remaining, if there is a block remaining then the column is invalid.
+                        return False
                     elif self.grid[starting_index][col_index] == 1: # Since the if statement above failed, we check if the next index is a 1, if it is then the block is too long and the method return False.
                         return False
                     else: # If we hit this else statement, then we have another block to check and we break out of the inner loop to check the next block.
@@ -166,9 +168,11 @@ class Nonogram:
         
 
 def main():
-    test_rows = [[3,5],[1,5],[1,6],[5],[2,4,1],[2,1],[3],[5,1],[1],[2,1,1]] # Array containing the correct number of "filled-in" squares for the rows of the grid
-    test_cols = [[1,4,1],[3,4,1],[1,3],[1,1],[3,1],[5],[5,1],[4,1,1],[5,1],[3]] # Array containing the correct number of "filled-in" squares for the columns of the grid
-    NonogramTest = Nonogram(10, test_rows, test_cols)
+    #test_rows = [[3,5],[1,5],[1,6],[5],[2,4,1],[2,1],[3],[5,1],[1],[2,1,1]] # Array containing the correct number of "filled-in" squares for the rows of the grid
+    #test_cols = [[1,4,1],[3,4,1],[1,3],[1,1],[3,1],[5],[5,1],[4,1,1],[5,1],[3]] # Array containing the correct number of "filled-in" squares for the columns of the grid
+    test_rows = [[1,1],[2,1],[3],[2],[1]]
+    test_cols = [[1,1],[2],[3],[1],[2,1]]
+    NonogramTest = Nonogram(5, test_rows, test_cols)
     NonogramTest.nonogram_solver()
 
 main()
