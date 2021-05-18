@@ -150,7 +150,7 @@ class Nonogram:
 
             if self.nonogram_solver_util(n+1) == True:
                 return True
-            
+            print("WE CLEANED A ROW")
             self.clean_row(n)
 
         return False
@@ -167,9 +167,9 @@ class Nonogram:
 
 
 def main():
-    test_rows = [[3,1], [1,1,1], [5], [2], [4]] # Array containing the correct number of "filled-in" squares for the rows of the grid
-    test_cols = [[3], [1,3], [5], [1,1], [3,1]] # Array containing the correct number of "filled-in" squares for the columns of the grid
-    NonogramTest = Nonogram(5, test_rows, test_cols)
+    test_rows = [[3,5],[1,5],[1,6],[5],[2,4,1],[2,1],[3],[5,1],[1],[2,1,1]] # Array containing the correct number of "filled-in" squares for the rows of the grid
+    test_cols = [[1,4,1],[3,4,1],[1,3],[1,1],[3,1],[5],[5,1],[4,1,1],[5,1],[3]] # Array containing the correct number of "filled-in" squares for the columns of the grid
+    NonogramTest = Nonogram(10, test_rows, test_cols)
     NonogramTest.nonogram_solver()
 
 main()
