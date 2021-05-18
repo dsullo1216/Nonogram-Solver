@@ -8,6 +8,7 @@ class Nonogram:
         self.potential_rows = {}
         for i in range(grid_size):
             self.potential_rows[i] = []
+            self.find_valid_rows(i)
 
     def __repr__(self):
         s = "\n"
@@ -86,7 +87,13 @@ class Nonogram:
             if self.is_valid_col(i) == False:
                 return False
         return True
-            
+
+    def place_row(self, row_index, potential_row_index):
+        row_to_try = self.potential_rows[row_index][potential_row_index]
+        for i in range(len(self.grid[0])):
+            self.grid[row_index][i] = row_to_try[i]
+        return 0
+    
     def clean_row(self, row_index):
         for i in range(len(self.grid)):
             self.grid[row_index][i] = 0
@@ -122,22 +129,19 @@ class Nonogram:
                 self.potential_rows[row_index].append(current_potential_row)
             return self.potential_rows[row_index]
     
-    def nonogram_solver(self, n):
-
-      return self.grid
+    def nonogram_solver_util(self, n):
+        if n > self.grid_size:
+            return True
+        for row in self.potential_rows[n]:
+            return
+        
 
 
 def main():
     test_rows = [[3,1], [1,1,1], [5], [2], [4]] # Array containing the correct number of "filled-in" squares for the rows of the grid
     test_cols = [[3], [1,3], [5], [1,1], [3,1]] # Array containing the correct number of "filled-in" squares for the columns of the grid
     NonogramTest = Nonogram(5, test_rows, test_cols)
-    NonogramTest.grid[1][1] = 1
-    NonogramTest.grid[2][1] = 0
-    NonogramTest.grid[3][1] = 1
-    NonogramTest.grid[4][1] = 1
-    col_to_print = 1
-    for i in range(NonogramTest.grid_size):
-        print(NonogramTest.grid[i][col_to_print])
-    print(NonogramTest.is_currently_valid_col(col_to_print, 3))
+    print(NonogramTest.potential_rows)
+    
 
 main()
