@@ -66,7 +66,41 @@ class Nonogram:
         for i in range(len(self.grid)):
             self.grid[row_index][i] = 0
         return 0
+    
+    def is_valid_row(self, row_index):
+        correct_row_values = self.valid_rows[row_index]
+        current_block_size = 0
+        starting_index = 0
+        for i in range(len(correct_row_values)):
+            for j in range(starting_index, len(self.grid)):
+                # Handles cases of 0s in the current cell
+                if self.grid[row_index][j] == 0 and current_block_size != 0: # Case 1: There is a 0 interrupting what should be a continuous block. Thus, the row is invalid and the method returns False.
+                    return False
+                if self.grid[row_index][j] == 0 and current_block_size == 0: # Case 2: There is a 0 but there is not a continuous block so it iterates to next index
+                    continue
 
+                # Handles cases of 1s in the current cell
+                if self.grid[row_index][j] == 1 and current_block_size > correct_row_values[i]: # Case 1: There is a 1, making the block too long. Thus, the row is invalid and the method returns False.
+                    return False
+                if self.grid[row_index][j] == 1 and current_block_size < correct_row_values[i]: # Case 2: There is a 1 and the block isn't large enough yet, adds to the counter for block size.
+                    current_block_size += 1
+
+                # Checks if the current block is satisfied. Resets the block size counter and sets the starting index for the loop to the next index in the array.
+                if current_block_size == correct_row_values[i]:
+                    current_block_size = 0
+                    starting_index = j+1
+                    if starting_index >= len(self.grid) and i == len(correct_row_values) - 1: # Checks if starting index is out of bounds and if we are checking the last block. If both are true then the row is valid and the method return True.
+                        return True
+                    elif self.grid[row_index][starting_index] == 1: # Since the if statement above failed, we check if the next index is a 1, if it is then the block is too long and the method return False.
+                        return False
+                    else: # If we hit this else statement, then we have another block to check and we break out of the inner loop to check the next block.
+                        break
+
+        if 1 in self.grid[row_index][starting_index:]:
+            return False # If there is another 1 found passed the loop, then there is an extra block and the method returns False.
+        else:
+            return True # If we finished iterating through all of the row values and indices in the row then the row is valid and the method returns True.
+    
     def find_valid_rows(self, row_index):
         correct_row_vals = self.valid_rows[row_index]
         potential_row = []
