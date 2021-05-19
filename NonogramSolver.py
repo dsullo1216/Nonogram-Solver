@@ -1,4 +1,3 @@
-from itertools import permutations
 from more_itertools import distinct_permutations
 
 class Nonogram:
@@ -130,12 +129,7 @@ class Nonogram:
             for z in range(num_extra_zeros):
                 row_elements.append([0])
             all_permutations = distinct_permutations(row_elements)
-            #checked_permutations = {}
-            #checked_permutations[0] = []
             for tup in all_permutations:
-                """ if tup in checked_permutations[0]:
-                    continue
-                checked_permutations[0].append(tup) """
                 row = list(tup)
                 row = [block for sublist in row for block in sublist]
                 if self.is_valid_row(row_index, row) == True and row not in self.potential_rows[row_index]:
