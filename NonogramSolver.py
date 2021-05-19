@@ -52,7 +52,7 @@ class Nonogram:
         for j in range(starting_index, len(self.grid[0])): # Loops through the remaining indices checking if there is an extra block. Returns False if there is
             if self.grid[j][col_index] == 1:
                 return False 
-        if next_starting_index == 0  and current_row_index == self.grid_size - 1: # We are in the last row and the column is all zeros so method returns False
+        if next_starting_index == 0  and current_row_index == self.grid_size - 1 and correct_col_values != [0]: # We are in the last row and the column is all zeros so method returns False
             return False
         return True
 
@@ -133,10 +133,13 @@ class Nonogram:
         
 
 def main():
-    test_rows = [[3,5],[1,5],[1,6],[5],[2,4,1],[2,1],[3],[5,1],[1],[2,1,1]] # Working Case
-    test_cols = [[1,4,1],[3,4,1],[1,3],[1,1],[3,1],[5],[5,1],[4,1,1],[5,1],[3]] # Working Case
+    #test_rows = [[3,5],[1,5],[1,6],[5],[2,4,1],[2,1],[3],[5,1],[1],[2,1,1]] # Working Case
+    #test_cols = [[1,4,1],[3,4,1],[1,3],[1,1],[3,1],[5],[5,1],[4,1,1],[5,1],[3]] # Working Case
     # Case Fails: Unable to find all valid rows for row 0: test_rows = [[3,2],[1,1,1,1],[1,2,1,2],[1,2,1,1,3],[1,1,2,1],[2,3,1,2],[9,3],[2,3],[1,2],[1,1,1,1],[1,4,1],[1,2,2,2],[1,1,1,1,1,1,2],[2,1,1,2,1,1],[3,4,3,1]]
     # Case Fails: Unable to find all valid rows for row 0: test_cols = [[4,3],[1,6,2],[1,2,2,1,1],[1,2,2,1,2],[3,2,3],[2,1,3],[1,1,1],[2,1,4,1],[1,1,1,1,2],[1,4,2],[1,1,2,1],[2,7,1],[2,1,1,2],[1,2,1],[3,3]]
+    test_rows = [[1,1],[3,3],[1,1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[3],[1]]
+    test_cols = [[4],[1,1],[2,1],[1,1],[1,2],[1,1],[2,1],[1,1],[4],[0]]
+    
     NonogramTest = Nonogram(10, test_rows, test_cols)
     NonogramTest.nonogram_solver()
 
