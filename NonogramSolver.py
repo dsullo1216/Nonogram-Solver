@@ -142,4 +142,5 @@ def main():
     NonogramTest = Nonogram(15, test_rows, test_cols)
     NonogramTest.nonogram_solver()
 
+
 main()
