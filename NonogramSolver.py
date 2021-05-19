@@ -171,21 +171,40 @@ class Nonogram:
             return False
         else:
             print("The solution for this Nonogram is: \n", self)
+            cmap = colors.ListedColormap(['White','Black'])
+            plt.figure(figsize=(6,6))
+            plt.pcolor(self.grid[::-1],cmap=cmap,edgecolors='grey', linewidths=1)
+            plt.show()
             return True
-        
+
+def test10x10_1():
+    test10x10_rows1 = [[3,5],[1,5],[1,6],[5],[2,4,1],[2,1],[3],[5,1],[1],[2,1,1]] 
+    test10x10_cols1 = [[1,4,1],[3,4,1],[1,3],[1,1],[3,1],[5],[5,1],[4,1,1],[5,1],[3]] 
+    Nonogram10x10_1 = Nonogram(10, test10x10_rows1, test10x10_cols1)
+    return Nonogram10x10_1
+
+def test10x10_2():
+    test10x10_rows2 = [[2],[4],[6],[8],[10],[4,4],[4,4],[10],[10],[10]] 
+    test10x10_cols2 = [[6],[7],[8],[9],[5,3],[5,3],[9],[8],[7],[6]]
+    Nonogram10x10_2 = Nonogram(10, test10x10_rows2, test10x10_cols2)
+    return Nonogram10x10_2
+
+def test15x15_1():
+    test15x15_rows1 = [[3,2],[1,1,1,1],[1,2,1,2],[1,2,1,1,3],[1,1,2,1],[2,3,1,2],[9,3],[2,3],[1,2],[1,1,1,1],[1,4,1],[1,2,2,2],[1,1,1,1,1,1,2],[2,1,1,2,1,1],[3,4,3,1]]
+    test15x15_cols1 = [[4,3],[1,6,2],[1,2,2,1,1],[1,2,2,1,2],[3,2,3],[2,1,3],[1,1,1],[2,1,4,1],[1,1,1,1,2],[1,4,2],[1,1,2,1],[2,7,1],[2,1,1,2],[1,2,1],[3,3]]
+    Nonogram15x15_1 = Nonogram(15, test15x15_rows1, test15x15_cols1)
+    return Nonogram15x15_1
+
 def main():
-    test_rows = [[3,5],[1,5],[1,6],[5],[2,4,1],[2,1],[3],[5,1],[1],[2,1,1]] # Working Case
-    test_cols = [[1,4,1],[3,4,1],[1,3],[1,1],[3,1],[5],[5,1],[4,1,1],[5,1],[3]] # Working Case
-    # Case Fails: Takes forever
-    #test_rows = [[3,2],[1,1,1,1],[1,2,1,2],[1,2,1,1,3],[1,1,2,1],[2,3,1,2],[9,3],[2,3],[1,2],[1,1,1,1],[1,4,1],[1,2,2,2],[1,1,1,1,1,1,2],[2,1,1,2,1,1],[3,4,3,1]]
-    # Case Fails: Takes forever
-    #test_cols = [[4,3],[1,6,2],[1,2,2,1,1],[1,2,2,1,2],[3,2,3],[2,1,3],[1,1,1],[2,1,4,1],[1,1,1,1,2],[1,4,2],[1,1,2,1],[2,7,1],[2,1,1,2],[1,2,1],[3,3]]
-    #test_rows = [[2],[4],[6],[8],[10],[4,4],[4,4],[10],[10],[10]]
-    #test_cols = [[6],[7],[8],[9],[5,3],[5,3],[9],[8],[7],[6]]
-    NonogramTest = Nonogram(10, test_rows, test_cols)
-    NonogramTest.nonogram_solver()
-    cmap = colors.ListedColormap(['White','Black'])
-    plt.figure(figsize=(6,6))
-    plt.pcolor(NonogramTest.grid[::-1],cmap=cmap,edgecolors='k', linewidths=3)
-    plt.show()
+    """
+    test1 = test10x10_1()
+    test1.nonogram_solver()
+    
+    test2 = test10x10_2()
+    test2.nonogram_solver()
+    
+    test3 = test15x15_1()
+    test3.nonogram_solver()
+    """
+    
 main()
