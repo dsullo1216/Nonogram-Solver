@@ -1,4 +1,6 @@
 from more_itertools import distinct_permutations
+from matplotlib import pyplot as plt
+from matplotlib import colors
 
 class Nonogram:
 
@@ -172,15 +174,18 @@ class Nonogram:
             return True
         
 def main():
-    #test_rows = [[3,5],[1,5],[1,6],[5],[2,4,1],[2,1],[3],[5,1],[1],[2,1,1]] # Working Case
-    #test_cols = [[1,4,1],[3,4,1],[1,3],[1,1],[3,1],[5],[5,1],[4,1,1],[5,1],[3]] # Working Case
+    test_rows = [[3,5],[1,5],[1,6],[5],[2,4,1],[2,1],[3],[5,1],[1],[2,1,1]] # Working Case
+    test_cols = [[1,4,1],[3,4,1],[1,3],[1,1],[3,1],[5],[5,1],[4,1,1],[5,1],[3]] # Working Case
     # Case Fails: Takes forever
-    test_rows = [[3,2],[1,1,1,1],[1,2,1,2],[1,2,1,1,3],[1,1,2,1],[2,3,1,2],[9,3],[2,3],[1,2],[1,1,1,1],[1,4,1],[1,2,2,2],[1,1,1,1,1,1,2],[2,1,1,2,1,1],[3,4,3,1]]
+    #test_rows = [[3,2],[1,1,1,1],[1,2,1,2],[1,2,1,1,3],[1,1,2,1],[2,3,1,2],[9,3],[2,3],[1,2],[1,1,1,1],[1,4,1],[1,2,2,2],[1,1,1,1,1,1,2],[2,1,1,2,1,1],[3,4,3,1]]
     # Case Fails: Takes forever
-    test_cols = [[4,3],[1,6,2],[1,2,2,1,1],[1,2,2,1,2],[3,2,3],[2,1,3],[1,1,1],[2,1,4,1],[1,1,1,1,2],[1,4,2],[1,1,2,1],[2,7,1],[2,1,1,2],[1,2,1],[3,3]]
+    #test_cols = [[4,3],[1,6,2],[1,2,2,1,1],[1,2,2,1,2],[3,2,3],[2,1,3],[1,1,1],[2,1,4,1],[1,1,1,1,2],[1,4,2],[1,1,2,1],[2,7,1],[2,1,1,2],[1,2,1],[3,3]]
     #test_rows = [[2],[4],[6],[8],[10],[4,4],[4,4],[10],[10],[10]]
     #test_cols = [[6],[7],[8],[9],[5,3],[5,3],[9],[8],[7],[6]]
-    NonogramTest = Nonogram(15, test_rows, test_cols)
+    NonogramTest = Nonogram(10, test_rows, test_cols)
     NonogramTest.nonogram_solver()
-
+    cmap = colors.ListedColormap(['White','Black'])
+    plt.figure(figsize=(6,6))
+    plt.pcolor(NonogramTest.grid[::-1],cmap=cmap,edgecolors='k', linewidths=3)
+    plt.show()
 main()
