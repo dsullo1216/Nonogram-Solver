@@ -173,7 +173,10 @@ class Nonogram:
             print("The solution for this Nonogram is: \n", self)
             cmap = colors.ListedColormap(['White','Black'])
             plt.figure(figsize=(6,6))
+            plt.title('The solution for this Nonogram is: ')
             plt.pcolor(self.grid[::-1],cmap=cmap,edgecolors='grey', linewidths=1)
+            plt.xticks([])
+            plt.yticks([])
             plt.show()
             return True
 
@@ -196,10 +199,10 @@ def test15x15_1():
     return Nonogram15x15_1
 
 def main():
-    """
+    
     test1 = test10x10_1()
     test1.nonogram_solver()
-    
+    """
     test2 = test10x10_2()
     test2.nonogram_solver()
     
