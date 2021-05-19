@@ -1,3 +1,5 @@
+from itertools import permutations
+
 class Nonogram:
 
     def __init__(self, grid_size, valid_rows, valid_cols):
@@ -67,22 +69,22 @@ class Nonogram:
             self.grid[row_index][i] = 0
         return 0
     
-    def is_valid_row(self, row_index):
+    def is_valid_row(self, row_index, potential_row):
         correct_row_values = self.valid_rows[row_index]
         current_block_size = 0
         starting_index = 0
         for i in range(len(correct_row_values)):
             for j in range(starting_index, len(self.grid)):
                 # Handles cases of 0s in the current cell
-                if self.grid[row_index][j] == 0 and current_block_size != 0: # Case 1: There is a 0 interrupting what should be a continuous block. Thus, the row is invalid and the method returns False.
+                if potential_row[j] == 0 and current_block_size != 0: # Case 1: There is a 0 interrupting what should be a continuous block. Thus, the row is invalid and the method returns False.
                     return False
-                if self.grid[row_index][j] == 0 and current_block_size == 0: # Case 2: There is a 0 but there is not a continuous block so it iterates to next index
+                if potential_row[j] == 0 and current_block_size == 0: # Case 2: There is a 0 but there is not a continuous block so it iterates to next index
                     continue
 
                 # Handles cases of 1s in the current cell
-                if self.grid[row_index][j] == 1 and current_block_size > correct_row_values[i]: # Case 1: There is a 1, making the block too long. Thus, the row is invalid and the method returns False.
+                if potential_row[j] == 1 and current_block_size > correct_row_values[i]: # Case 1: There is a 1, making the block too long. Thus, the row is invalid and the method returns False.
                     return False
-                if self.grid[row_index][j] == 1 and current_block_size < correct_row_values[i]: # Case 2: There is a 1 and the block isn't large enough yet, adds to the counter for block size.
+                if potential_row[j] == 1 and current_block_size < correct_row_values[i]: # Case 2: There is a 1 and the block isn't large enough yet, adds to the counter for block size.
                     current_block_size += 1
 
                 # Checks if the current block is satisfied. Resets the block size counter and sets the starting index for the loop to the next index in the array.
@@ -91,12 +93,12 @@ class Nonogram:
                     starting_index = j+1
                     if starting_index >= len(self.grid) and i == len(correct_row_values) - 1: # Checks if starting index is out of bounds and if we are checking the last block. If both are true then the row is valid and the method return True.
                         return True
-                    elif self.grid[row_index][starting_index] == 1: # Since the if statement above failed, we check if the next index is a 1, if it is then the block is too long and the method return False.
+                    elif potential_row[starting_index] == 1: # Since the if statement above failed, we check if the next index is a 1, if it is then the block is too long and the method return False.
                         return False
                     else: # If we hit this else statement, then we have another block to check and we break out of the inner loop to check the next block.
                         break
 
-        if 1 in self.grid[row_index][starting_index:]:
+        if 1 in potential_row[starting_index:]:
             return False # If there is another 1 found passed the loop, then there is an extra block and the method returns False.
         else:
             return True # If we finished iterating through all of the row values and indices in the row then the row is valid and the method returns True.
@@ -105,30 +107,33 @@ class Nonogram:
         correct_row_vals = self.valid_rows[row_index]
         potential_row = []
         min_num_cells = sum(correct_row_vals) + len(correct_row_vals) - 1
-        for num_cells in correct_row_vals:
+        if correct_row_vals == [0]:
+            potential_row = [0 for k in range(self.grid_size)]
+            self.potential_rows[row_index].append(potential_row)
+            return self.potential_rows[row_index]
+        if min_num_cells == self.grid_size: # There is only one possible row for this row, creates the row and adds it to the dictionary of possible rows.
+            for num_cells in correct_row_vals:
                 potential_row += [1 for k in range(num_cells)]
                 potential_row += [0]
-        potential_row = potential_row[:-1]
-        if min_num_cells == self.grid_size: # There is only one possible row for this row, creates the row and adds it to the dictionary of possible rows.
+            potential_row = potential_row[:-1]
             self.potential_rows[row_index].append(potential_row)
             return self.potential_rows[row_index]
         else: # There are multiple possible rows; iterate through all possibilities and add them to the dictionary
-            num_extra_zeros = self.grid_size - min_num_cells # Number of extra zeros needed to fill the remainder of the row
-            gap_indices = [0] + [i for i, x in enumerate(potential_row) if x == 0] + [len(potential_row)-1] # Creates a list of indices where an extra zero can be placed
-            # Using a triple-nested for loop, tries all possible amount of zeros in each gap by having effectively two pointers to try all placements of zeros 
-            for num_zeros in range(1, num_extra_zeros+1):
-                for gap1 in gap_indices[:-1]:
-                    for gap2 in gap_indices[gap_indices.index(gap1)+1:]:
-                        if gap2 != len(potential_row)-1:
-                            current_potential_row = potential_row[:gap1] + [0 for k in range(num_zeros)] + potential_row[gap1:gap2] + [0 for k in range(num_extra_zeros - num_zeros)] + potential_row[gap2:]
-                        else:
-                            current_potential_row = potential_row[:gap1] + [0 for k in range(num_zeros)] + potential_row[gap1:] + [0 for k in range(num_extra_zeros -  num_zeros)]
-                        
-                        if current_potential_row not in self.potential_rows[row_index]: # Since there is potential for duplicate rows to show up, filters out rows already added to the dictionary
-                            self.potential_rows[row_index].append(current_potential_row)
-            current_potential_row = potential_row + [0 for k in range(num_extra_zeros)]
-            if current_potential_row not in self.potential_rows[row_index]: # Handles edge case of adding all extra zeros to the end of the row
-                self.potential_rows[row_index].append(current_potential_row)
+            row_elements = []
+            num_extra_zeros = self.grid_size - min_num_cells
+            for i in range(len(correct_row_vals)):
+                potential_row = [1 for k in range(correct_row_vals[i])]
+                if i != len(correct_row_vals) - 1:
+                    potential_row += [0]
+                row_elements.append(potential_row)
+            for z in range(num_extra_zeros):
+                row_elements.append([0])
+            all_permutations = permutations(row_elements)
+            for tup in all_permutations:
+                row = list(tup)
+                row = [block for sublist in row for block in sublist]
+                if self.is_valid_row(row_index, row) == True and row not in self.potential_rows[row_index]:
+                    self.potential_rows[row_index].append(row)
             return self.potential_rows[row_index]
     
     def nonogram_solver_util(self, n):
@@ -157,6 +162,7 @@ class Nonogram:
 
     def nonogram_solver(self):
         for i in range(self.grid_size):
+            print("Finding valid rows for row", i)
             self.find_valid_rows(i)
         if self.nonogram_solver_util(0) == False:
             print("This Nonogram has no solution")
@@ -165,16 +171,16 @@ class Nonogram:
             print("The solution for this Nonogram is: \n", self)
             return True
         
-
 def main():
     #test_rows = [[3,5],[1,5],[1,6],[5],[2,4,1],[2,1],[3],[5,1],[1],[2,1,1]] # Working Case
     #test_cols = [[1,4,1],[3,4,1],[1,3],[1,1],[3,1],[5],[5,1],[4,1,1],[5,1],[3]] # Working Case
-    # Case Fails: Unable to find all valid rows for row 0: 
-    test_rows = [[3,2],[1,1,1,1],[1,2,1,2],[1,2,1,1,3],[1,1,2,1],[2,3,1,2],[9,3],[2,3],[1,2],[1,1,1,1],[1,4,1],[1,2,2,2],[1,1,1,1,1,1,2],[2,1,1,2,1,1],[3,4,3,1]]
-    # Case Fails: Unable to find all valid rows for row 0: 
-    test_cols = [[4,3],[1,6,2],[1,2,2,1,1],[1,2,2,1,2],[3,2,3],[2,1,3],[1,1,1],[2,1,4,1],[1,1,1,1,2],[1,4,2],[1,1,2,1],[2,7,1],[2,1,1,2],[1,2,1],[3,3]]
-    NonogramTest = Nonogram(15, test_rows, test_cols)
+    # Case Fails: Takes forever
+    #test_rows = [[3,2],[1,1,1,1],[1,2,1,2],[1,2,1,1,3],[1,1,2,1],[2,3,1,2],[9,3],[2,3],[1,2],[1,1,1,1],[1,4,1],[1,2,2,2],[1,1,1,1,1,1,2],[2,1,1,2,1,1],[3,4,3,1]]
+    # Case Fails: Takes forever
+    #test_cols = [[4,3],[1,6,2],[1,2,2,1,1],[1,2,2,1,2],[3,2,3],[2,1,3],[1,1,1],[2,1,4,1],[1,1,1,1,2],[1,4,2],[1,1,2,1],[2,7,1],[2,1,1,2],[1,2,1],[3,3]]
+    test_rows = [[2],[4],[6],[8],[10],[4,4],[4,4],[10],[10],[10]]
+    test_cols = [[6],[7],[8],[9],[5,3],[5,3],[9],[8],[7],[6]]
+    NonogramTest = Nonogram(10, test_rows, test_cols)
     NonogramTest.nonogram_solver()
-
 
 main()
