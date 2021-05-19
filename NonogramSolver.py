@@ -198,16 +198,24 @@ def test15x15_1():
     Nonogram15x15_1 = Nonogram(15, test15x15_rows1, test15x15_cols1)
     return Nonogram15x15_1
 
+def test_unknown():
+    rows = [[2,2],[2,2],[6],[6],[1,6,1],[6,2],[6],[2,2],[1,1],[1,1]]
+    cols = [[1,1],[2],[2,4],[2,4],[5],[5,2],[4],[3],[4,1,1],[6,3]]
+    Nonogram10 = Nonogram(10, rows, cols)
+    return Nonogram10
+
 def main():
-    
+    """
     test1 = test10x10_1()
     test1.nonogram_solver()
-    """
+    
     test2 = test10x10_2()
     test2.nonogram_solver()
     
     test3 = test15x15_1()
     test3.nonogram_solver()
     """
+    test_unknown1 = test_unknown()
+    test_unknown1.nonogram_solver()
     
 main()
